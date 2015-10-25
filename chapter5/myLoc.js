@@ -59,11 +59,9 @@ function computeDistance(startCoords, destCoords) {
   var destLongRads = degreesToRadians(destCoords.longitude);
 
   var radius = 6371; //радиус Земли в километрах
-  var distance = Math.acos(
-                            Math.sin(startLatRads)*Math.sin(destLatRads) +
-                            Math.cos(startLatRads)*Math.cos(destLatRads) +
-                            Math.cos(startLongRads - destLongRads)
-                          ) * radius;
+  var distance = Math.acos( Math.sin(startLatRads) * Math.sin(destLatRads) +
+                            Math.cos(startLatRads) * Math.cos(destLatRads) *
+                            Math.cos(startLongRads - destLongRads)) * radius;
   return distance;
 }
 
@@ -76,12 +74,38 @@ function showMap(coords) {
   var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude);
   
   var mapOptions = {
-    zoom: 18,
+    zoom: 15,
     center: googleLatAndLong,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
   var mapDiv = document.getElementById("map");
   map = new google.maps.Map(mapDiv, mapOptions);
+  
+  var title = "Your Location";
+  var content = "You are here: "+coords.latitude+", "+coords.longitude;
+  addMarker(map, googleLatAndLong, title, content);
+}
 
+function addMarker(map, latlong, title, content) {
+  
+  var markerOptions = {
+    position: latlong,
+    map: map,
+    title: title,
+    clickable: true
+  };
+
+  var marker = new google.maps.Marker(markerOptions);
+
+  var infoWindowOptions = {
+    content: content,
+    position: latlong
+  };
+
+  var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+
+  google.maps.event.addListener(marker, "click", function() {
+    infoWindow.open(map)
+  });
 }
