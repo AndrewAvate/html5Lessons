@@ -24,9 +24,11 @@ function getMyLocation() {
 }
 
 function watchLocation() {
+  var options = {enableHighAccuracy:true, timeout:3000};
   watchId = navigator.geolocation.watchPosition(
           displayLocation, 
-          displayError);
+          displayError,
+          options);
 }
 
 function clearWatch() {
@@ -50,6 +52,8 @@ function displayLocation(position) {
   
   if(map == null) {
     showMap(position.coords);
+  } else {
+    scrollMapToPosition(position.coords);
   }
   
 }
@@ -113,6 +117,18 @@ function showMap(coords) {
   var title = "Your Location";
   var content = "You are here: "+coords.latitude+", "+coords.longitude;
   addMarker(map, googleLatAndLong, title, content);
+}
+
+function scrollMapToPosition(coords) {
+  var latitude = coords.latitude;
+  var longitude = coords.longitude;
+
+  var googleLatAndLong = new google.maps.LatLng(latitude, longitude);
+
+  map.panTo(googleLatAndLong);
+
+  addMarker(map, googleLatAndLong, "Your new location", "You moved to: "+
+    latitude + ", " + longitude);
 }
 
 
