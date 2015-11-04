@@ -12,7 +12,6 @@ var wickedlySmartCoords = {
 function getMyLocation() {
   if (navigator.geolocation) {
     var watchButton = document.getElementById("watch");
-    watchLocation();
     watchButton.onClick = watchLocation;
 
     var clearWatchButton = document.getElementById("clearwatch");
