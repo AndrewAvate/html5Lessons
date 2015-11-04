@@ -24,7 +24,7 @@ function getMyLocation() {
 }
 
 function watchLocation() {
-  var options = {enableHighAccuracy:true, timeout:3000};
+  var options = {enableHighAccuracy:true, timeout:5000};
   watchId = navigator.geolocation.watchPosition(
           displayLocation, 
           displayError,
