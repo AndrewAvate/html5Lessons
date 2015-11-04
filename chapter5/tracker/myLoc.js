@@ -1,24 +1,36 @@
+var map;
+var watchId;
 window.onload = getMyLocation;
-
-
 
 var wickedlySmartCoords = {
   latitude: 47.624851,
   longitude: -122.52099
 };
 
-var map;
-
-
-
-
 
 
 function getMyLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(displayLocation, displayError);
+    var watchButton = document.getElementById("watch");
+    watchLocation();
+    watchButton.onClick = watchLocation;
+
+    var clearWatchButton = document.getElementById("clearwatch");
+    clearWatchButton.onClick = clearWatch;
+
   } else {
     alert("Oops, no geolocation support");
+  }
+}
+
+function watchLocation() {
+  watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+}
+
+function clearWatch() {
+  if(watchId) {
+    navigator.geolocation.clearWatch(watchId);
+    watchId = null;
   }
 }
 
@@ -28,14 +40,19 @@ function displayLocation(position) {
 
   var div = document.getElementById("location");
   div.innerHTML = "You are at Latitude: "+latitude+", Longitude: "+longitude;
-  div.innerHTML +=" (with " + position.coords.accuracy + " meters accuracy)";
+  div.innerHTML += " (with " + position.coords.accuracy + " meters accuracy)";
 
   var km = computeDistance(position.coords, wickedlySmartCoords);
   var distance = document.getElementById("distance");
   distance.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
- 
-  showMap(position.coords);
+  
+  if(map == null) {
+    showMap(position.coords);
+  }
+  
 }
+
+
 
 function displayError(error) {
   var errorTypes = {
@@ -54,6 +71,8 @@ function displayError(error) {
   
 }
 
+
+
 function computeDistance(startCoords, destCoords) {
   var startLatRads = degreesToRadians(startCoords.latitude);
   var startLongRads = degreesToRadians(startCoords.longitude);
@@ -67,10 +86,15 @@ function computeDistance(startCoords, destCoords) {
   return distance;
 }
 
+
+
 function degreesToRadians(degrees) {
   var radians = (degrees * Math.PI)/180;
   return radians;
 }
+
+
+
 
 function showMap(coords) {
   var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude);
@@ -88,6 +112,7 @@ function showMap(coords) {
   var content = "You are here: "+coords.latitude+", "+coords.longitude;
   addMarker(map, googleLatAndLong, title, content);
 }
+
 
 function addMarker(map, latlong, title, content) {
   
