@@ -12,10 +12,11 @@ var wickedlySmartCoords = {
 function getMyLocation() {
   if (navigator.geolocation) {
     var watchButton = document.getElementById("watch");
-    watchButton.onClick = watchLocation;
+    
+    watchButton.onclick = watchLocation;
 
     var clearWatchButton = document.getElementById("clearwatch");
-    clearWatchButton.onClick = clearWatch;
+    clearWatchButton.onclick = clearWatch;
 
   } else {
     alert("Oops, no geolocation support");
@@ -23,11 +24,13 @@ function getMyLocation() {
 }
 
 function watchLocation() {
-  watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+  watchId = navigator.geolocation.watchPosition(
+          displayLocation, 
+          displayError);
 }
 
 function clearWatch() {
-  if(watchId) {
+  if (watchId) {
     navigator.geolocation.clearWatch(watchId);
     watchId = null;
   }
