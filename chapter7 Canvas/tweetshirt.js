@@ -4,6 +4,7 @@ window.onload = executor;
 function executor() {
 	var button = document.getElementById("previewButton");
 	button.onclick = previewHandler;
+	makeImage();
 }
 
 //submit handler
@@ -27,6 +28,8 @@ function previewHandler() {
 			drawCircle(canvas, context);
 		}
 	}
+	drawBird(canvas, context);
+	drawText(canvas, context);
 }
 
 function drawCircle(canvas, context) {
@@ -34,8 +37,8 @@ function drawCircle(canvas, context) {
 	var x = Math.floor(Math.random() * canvas.width);
 	var y = Math.floor(Math.random() * canvas.height);
 	context.beginPath();
-	//context.fillStyle = "lightblue";
-	context.fillStyle = "red";
+	context.fillStyle = "lightblue";
+	//context.fillStyle = "red";
 	context.arc(x, y, radius, 0, 2 * Math.PI, true);
 	context.fill();
 }
@@ -45,8 +48,8 @@ function drawSquare (canvas, context) {
 	var width = Math.floor(Math.random() * 40);
 	var x = Math.floor(Math.random() * canvas.width);
 	var y = Math.floor(Math.random() * canvas.height);
-	//context.fillStyle = "lightblue";
-	context.fillStyle = "red";
+	context.fillStyle = "lightblue";
+	//context.fillStyle = "red";
 	context.fillRect(x, y, width, width);
 }
 
@@ -57,4 +60,34 @@ function fillBackgroundColor(canvas, context) {
 	var bgColor = selectObj.options[index].value;
 	context.fillStyle = bgColor;
 	context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawText(canvas, context) {
+	var selectObj = document.getElementById("foregroundColor");
+	var index = selectObj.selectedIndex;
+	var fgColor = selectObj[index].value;
+	context.fillStyle = fgColor;
+	context.font = "bold 1em sans-serif";
+	context.textAlign = "left";
+	context.fillText("Я повелся на этот твит...", 20, 40);
+
+
+    context.font = "bold 1em sans-serif";
+	context.textAlign = "right";
+	context.fillText("...а в результате получил эту паршивую майку!", canvas.width-20, canvas.height-40);
+}
+
+function drawBird(canvas, context) {
+	var twitterBird = new Image();
+	twitterBird.src = "twitterBird.png";
+	twitterBird.onload = function() {
+		context.drawImage(twitterBird, 20, 120, 70, 70);
+	};
+}
+
+function makeImage() {
+	var canvas = document.getElementById("tshirtCanvas");
+	canvas.onclick = function() {
+		window.location = canvas.toDataURL("image/png");
+	};
 }
