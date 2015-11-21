@@ -17,16 +17,19 @@ form input#note_text {
 }
 
 /* sticky note */
+#stickies {
+	list-style: disc outside;
+}
 
 ul#stickies li {
 	display: block;
 	list-style: none;
-	/*z-index: 1;*/
+	z-index: 1;
 	float: left; 
 	margin: 30px;
 	padding: 15px 15px 50px 15px;
 	width: 200px;
-	height: 100px;
+	height: 200px;
 	border: 1px solid #bfbfbf;
     background-color: LightGoldenRodYellow;  /* use #fafad2 if name doesn't work */
 	color: black;
@@ -87,8 +90,10 @@ ul#stickies li:hover {
 	-moz-transform: rotate(0deg) scale(1.35);
 	-o-transform: rotate(0deg) scale(1.35);
 	-ms-transform: rotate(0deg) scale(1.35);
-	transform: rotate(0deg) scale(1.35);
-	z-index: 10;
-	height: 200px;
+	transform: rotate(0deg) scale(1.5);
+	position: relative;
+	z-index: 3;
+	overflow: auto;
+	font-size: 50%;
 }
 
